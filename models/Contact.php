@@ -6,6 +6,30 @@ class Contact {
         $this->db = $db;
     }
 
+    private function validateContactData($data)
+    {
+        $errors = [];
+        if (empty($data['name']) || strlen($data['name']) < 2) {
+            $errors[] = "Name must be at least 2 characters long.";
+        }
+        if (empty($data['first_name']) || strlen($data['first_name']) < 2) {
+            $errors[] = "First name must be at least 2 characters long.";
+        }
+        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Invalid email address.";
+        }
+        if (empty($data['street'])) {
+            $errors[] = "Street address is required.";
+        }
+        if (empty($data['zip_code']) || !preg_match('/^\d{5,10}$/', $data['zip_code'])) {
+            $errors[] = "Zip code must be between 5 and 10 digits.";
+        }
+        if (empty($data['city_id']) || !is_numeric($data['city_id'])) {
+            $errors[] = "Invalid city selected.";
+        }
+        return $errors;
+    }
+
     public function getAll() {
         try {
             $result = $this->db->query("SELECT c.*, ct.name as city_name FROM contacts c JOIN cities ct ON c.city_id = ct.id");
@@ -40,6 +64,11 @@ class Contact {
     
     public function create($data) {
         try {
+            $errors = $this->validateContactData($data);
+            if (!empty($errors)) {
+                throw new Exception(implode(" ", $errors));
+            }
+
             $name = $this->db->escape($data['name']);
             $first_name = $this->db->escape($data['first_name']);
             $email = $this->db->escape($data['email']);
@@ -61,6 +90,11 @@ class Contact {
 
     public function update($id, $data) {
         try {
+            $errors = $this->validateContactData($data);
+            if (!empty($errors)) {
+                throw new Exception(implode(" ", $errors));
+            }
+
             $id = $this->db->escape($id);
             $name = $this->db->escape($data['name']);
             $first_name = $this->db->escape($data['first_name']);
@@ -91,6 +125,13 @@ class Contact {
     public function delete($id) {
         try {
             $id = $this->db->escape($id);
+
+            // Check if the contact exists
+            $checkResult = $this->db->query("SELECT id FROM contacts WHERE id = $id");
+            if ($checkResult->num_rows === 0) {
+                throw new Exception("Contact with ID $id does not exist.");
+            }
+
             $result = $this->db->query("DELETE FROM contacts WHERE id = $id");
             if (!$result) {
                 throw new Exception("Delete operation failed: " . $this->db->error);

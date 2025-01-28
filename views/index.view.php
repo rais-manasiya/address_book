@@ -13,6 +13,7 @@ $cities = $city->getAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,13 +22,14 @@ $cities = $city->getAll();
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
     <div class="container-fluid mt-5">
         <h1 class="mb-4">Address Book</h1>
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addContactModal">Add New Contact</button>
         <button class="btn btn-secondary mb-3 ml-2" id="exportXML">Export XML</button>
         <button class="btn btn-secondary mb-3 ml-2" id="exportJSON">Export JSON</button>
-        
+
         <table id="contactsTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -42,18 +44,18 @@ $cities = $city->getAll();
             </thead>
             <tbody>
                 <?php foreach ($contacts as $contact): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($contact['name']); ?></td>
-                    <td><?php echo htmlspecialchars($contact['first_name']); ?></td>
-                    <td><?php echo htmlspecialchars($contact['email']); ?></td>
-                    <td><?php echo htmlspecialchars($contact['street']); ?></td>
-                    <td><?php echo htmlspecialchars($contact['zip_code']); ?></td>
-                    <td><?php echo htmlspecialchars($contact['city_name']); ?></td>
-                    <td>
-                        <button class="btn btn-sm btn-info edit-contact" data-id="<?php echo $contact['id']; ?>">Edit</button>
-                        <button class="btn btn-sm btn-danger delete-contact" data-id="<?php echo $contact['id']; ?>">Delete</button>
-                    </td>
-                </tr>
+                    <tr>
+                        <td><?php echo htmlspecialchars($contact['name']); ?></td>
+                        <td><?php echo htmlspecialchars($contact['first_name']); ?></td>
+                        <td><?php echo htmlspecialchars($contact['email']); ?></td>
+                        <td><?php echo htmlspecialchars($contact['street']); ?></td>
+                        <td><?php echo htmlspecialchars($contact['zip_code']); ?></td>
+                        <td><?php echo htmlspecialchars($contact['city_name']); ?></td>
+                        <td>
+                            <button class="btn btn-sm btn-info edit-contact" data-id="<?php echo $contact['id']; ?>">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-contact" data-id="<?php echo $contact['id']; ?>">Delete</button>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
@@ -95,7 +97,7 @@ $cities = $city->getAll();
                             <label for="city_id">City</label>
                             <select class="form-control" id="city_id" name="city_id" required>
                                 <?php foreach ($cities as $city): ?>
-                                <option value="<?php echo $city['id']; ?>"><?php echo htmlspecialchars($city['name']); ?></option>
+                                    <option value="<?php echo $city['id']; ?>"><?php echo htmlspecialchars($city['name']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -146,7 +148,7 @@ $cities = $city->getAll();
                             <label for="edit_city_id">City</label>
                             <select class="form-control" id="edit_city_id" name="city_id" required>
                                 <?php foreach ($cities as $city): ?>
-                                <option value="<?php echo $city['id']; ?>"><?php echo htmlspecialchars($city['name']); ?></option>
+                                    <option value="<?php echo $city['id']; ?>"><?php echo htmlspecialchars($city['name']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -165,6 +167,8 @@ $cities = $city->getAll();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>
